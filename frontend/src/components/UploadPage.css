@@ -1,0 +1,141 @@
+
+.upload-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: linear-gradient(to right, #667eea, #764ba2);
+  padding-top: 80px;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.upload-card {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.upload-title {
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.upload-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.upload-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #667eea;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.upload-button:hover {
+  background-color: #5563d1;
+}
+
+.upload-button[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.upload-loading {
+  color: #666;
+  font-style: italic;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Enhanced result card */
+.upload-result {
+  margin-top: 30px;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  padding: 25px 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.5s ease-in-out;
+  text-align: left;
+}
+
+.upload-result p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #444;
+}
+
+.upload-result h3 {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* No known faces */
+.no-known {
+  color: #aa0000;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Student name badges */
+.present-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.student-badge {
+  background-color: #667eea;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.student-badge:hover {
+  background-color: #5563d1;
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.captured-image {
+  border-radius: 8px;
+  margin-top: 1rem;
+  border: 2px solid #ddd;
+}

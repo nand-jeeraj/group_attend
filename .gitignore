@@ -1,0 +1,6 @@
+.env
+backend/env
+build
+node_modules
+app-key.pem
+backend/__pycache__
