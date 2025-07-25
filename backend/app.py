@@ -11,7 +11,7 @@ def create_app():
     app.config.from_object(Config)
     
 
-    CORS(app, origins=["http://localhost:3000", "https://sweet-mandazi-90bd7f.netlify.app"], supports_credentials=True)
+    CORS(app, origins=["http://localhost:3000", "https://frontend-drab-nine-15.vercel.app/"], supports_credentials=True)
     mongo.init_app(app)
     login_manager.init_app(app)
 
