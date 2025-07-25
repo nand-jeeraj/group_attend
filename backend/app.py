@@ -6,13 +6,12 @@ from routes import register_routes
 from flask_login import UserMixin
 
 
-
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     
 
-    CORS(app, supports_credentials=True)
+    CORS(app)
     mongo.init_app(app)
     login_manager.init_app(app)
 
