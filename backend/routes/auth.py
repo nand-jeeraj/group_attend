@@ -1,9 +1,15 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from models.user import DummyUser
 from extensions import mongo
 from datetime import datetime  
+import os
+import face_recognition
+import numpy as np
+
+from PIL import Image
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/api")
 import re
@@ -13,53 +19,62 @@ def is_valid_email(email):
 
 def is_valid_password(password):
     return len(password) >= 6  
+UPLOAD_FOLDER = 'uploads/faces'
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
-    data = request.json
-    email = data.get("username") 
-    password = data.get("password")
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    image_file = request.files.get('image')
 
-    if not email or not is_valid_email(email):
-        return jsonify({"error": "Invalid email format"}), 400
+    if not all([name, email, password, image_file]):
+        return jsonify({'error': 'All fields required'}), 400
 
-    if not password or not is_valid_password(password):
-        return jsonify({"error": "Password must be at least 6 characters"}), 400
+    if mongo.db.users.find_one({'email': email}):
+        return jsonify({'error': 'User already exists'}), 400
 
-    if mongo.db.users.find_one({"username": email}):
-        return jsonify({"error": "User already exists"}), 409
+    # Convert image to face encoding
+    try:
+        img = Image.open(image_file.stream).convert('RGB')
+        img_array = np.array(img)
+        encodings = face_recognition.face_encodings(img_array)
 
-    hashed_pw = generate_password_hash(password)
-    mongo.db.faculty.insert_one({"username": email, "password": hashed_pw})
+        if len(encodings) == 0:
+            return jsonify({'error': 'No face detected in the image'}), 400
 
-    return jsonify({"message": "Registration successful"}), 201
+        face_encoding = encodings[0].tolist()
+    except Exception as e:
+        return jsonify({'error': 'Image processing failed'}), 500
+
+    # Hash the password
+    hashed_password = generate_password_hash(password)
+
+    mongo.db.users.insert_one({
+        'name': name,
+        'email': email,
+        'password': hashed_password,
+        'face_encoding': face_encoding
+    })
+
+    return jsonify({'message': 'User registered successfully'}), 201
 
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    data = request.json
-    username = data["username"]
-    password = data["password"]
+        data = request.get_json()
+        email = data.get("email")
+        password = data.get("password")
 
-    user = mongo.db.faculty.find_one({"username": username})
-    if user and check_password_hash(user["password"], password):
-        login_user(DummyUser(user["_id"]))
+        if not email or not password:
+            return jsonify({'success': False, 'message': 'Email and password required'}), 400
+
+        user = mongo.db.users.find_one({"email": email})
+        if user and check_password_hash(user["password"], password):
+         login_user(DummyUser(user["_id"]))
 
         
-        mongo.db.event_attendance.insert_one({
-            "col_id": data.get("col_id", "UNKNOWN"),
-            "event_id": data.get("event_id"),
-            "event": data.get("event"),
-            "event_date": datetime.utcnow(),
-            "email": user.get("username", ""),  
-            "regno": data.get("regno"),
-            "type": data.get("type")  # student or faculty
-        })
-
-        return jsonify({"success": True})
-    
-    return jsonify({"success": False, "message": "Invalid"}), 401
-
+        return jsonify({'success': True, 'message': 'Login successful'}), 200
 
 @auth_bp.route("/logout", methods=["POST"])
 def logout():

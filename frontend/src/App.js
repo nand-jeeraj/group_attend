@@ -2,37 +2,48 @@ import React, { useContext } from "react";
 import "./style.css";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import api from "./services/api";
-import { AuthContext } from "./Authcontext";  
+import { AuthContext } from "./Authcontext";
 
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setAuthenticated } = useContext(AuthContext);  
+  const { setAuthenticated } = useContext(AuthContext);
+
+  
+  const hiddenRoutes = ["/login", "/register", "/face-login", "/login-options"];
+  const shouldHideNavbar = hiddenRoutes.includes(location.pathname);
 
   const logout = async () => {
     try {
       await api.post("/logout");
-      setAuthenticated(false);                   
-      navigate("/login");                        
+      setAuthenticated(false);
+      navigate("/login-options");
     } catch (err) {
       alert("Logout failed.");
     }
   };
 
-  
-  const hideNavbarRoutes = ["/attendance-options",  "/camera-attendance"];
-  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 to-indigo-200 p-4">
       {!shouldHideNavbar && (
-        <nav className="flex gap-4 mb-6">
-          <Link to="/">Upload</Link>
+        <nav className="flex gap-4 mb-6 items-center">
+          <Link to="/upload">Upload</Link>
           <Link to="/history">History</Link>
           <Link to="/dashboard">Dashboard</Link>
-          
           <Link to="/add-face">Add Face</Link>
-          <button onClick={logout}>Logout</button>
+          <button
+            onClick={logout}
+            style={{
+              backgroundColor: "#e53e3e",
+              color: "#fff",
+              padding: "6px 12px",
+              borderRadius: "6px",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Logout
+          </button>
         </nav>
       )}
       <Outlet />

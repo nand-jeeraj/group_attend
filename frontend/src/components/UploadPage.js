@@ -17,7 +17,7 @@ export default function UploadPage() {
     fd.append("image", image);
 
     setLoading(true);
-    setResult(null); // Clear previous results
+    setResult(null); 
 
     try {
       const res = await api.post("/upload", fd, {
