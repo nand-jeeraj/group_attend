@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Authcontext";
 import "./FaceLogin.css";
+import api from "../services/api";
 
 const FaceLogin = () => {
   const videoRef = useRef(null);
@@ -52,7 +53,7 @@ const FaceLogin = () => {
     formData.append("image", capturedImage);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/face-login", formData, {
+      const res = await api.post("/face-login", formData, {
         withCredentials: true,
       });
 
