@@ -58,7 +58,6 @@ const FaceLogin = () => {
       });
 
       setMessage(res.data.message);
-
       if (res.data.message === "Login successful") {
         setAuthenticated(true);
         localStorage.setItem("authenticated", "true");

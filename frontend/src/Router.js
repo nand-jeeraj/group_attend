@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import App from "./App";
 import Login from "./components/Login";
 import FaceLogin from "./components/FaceLogin";
-import AttendanceOptions from "./components/AttendanceOptions"; // this is login-options
+import AttendanceOptions from "./components/AttendanceOptions"; 
 import Register from "./components/Register";
 import UploadPage from "./components/UploadPage";
 import History from "./components/History";
@@ -70,3 +70,5 @@ export default function Router() {
     </AuthContext.Provider>
   );
 }
+
+

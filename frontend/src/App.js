@@ -28,9 +28,11 @@ export default function App() {
       {!shouldHideNavbar && (
         <nav className="flex gap-4 mb-6 items-center">
           <Link to="/upload">Upload</Link>
-          <Link to="/history">History</Link>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/add-face">Add Face</Link>
+          
+          <Link to="/upload/history">History</Link>
+          <Link to="/upload/dashboard">Dashboard</Link>
+          <Link to="/upload/add-face">Add Face</Link>
+
           <button
             onClick={logout}
             style={{

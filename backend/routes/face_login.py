@@ -60,6 +60,8 @@ def face_login():
         matches = face_recognition.compare_faces([known_encoding], unknown_encoding)
 
         if matches[0]:
+            user_obj = DummyUser(user['_id'])  
+            login_user(user_obj)
             return jsonify({'message': 'Login successful', 'email': user['email'], 'name': user['name']}), 200
 
     return jsonify({'error': 'Face not recognized'}), 401
